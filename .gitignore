@@ -1,0 +1,13 @@
+# Cartella generata da Hugo (non caricarla, verrà rigenerata dal server)
+/public
+# /resources
+
+# Dipendenze Node.js (per Tailwind)
+node_modules/
+package-lock.json
+yarn.lock
+
+# File di sistema e temporanei
+.DS_Store
+Thumbs.db
+.hugo_build.lock
