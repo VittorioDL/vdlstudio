@@ -1,0 +1,18 @@
+{{ define "main" }}
+{{ partial "header.html" . }}
+
+<main class="min-h-screen bg-background py-20 px-6">
+    <article class="max-w-2xl mx-auto">
+        
+
+        <div class="prose prose-lg prose-neutral mx-auto text-muted-foreground leading-relaxed">
+            {{ .Content }}
+        </div>
+
+
+    </article>
+</main>
+
+{{/*  {{ partial "footer.html" . }}   */}}
+
+{{ end }}

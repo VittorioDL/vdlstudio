@@ -1,0 +1,96 @@
+{{/*  {{ define "main" }}
+    {{ .Content }}
+{{ end }}  */}}
+
+{{ define "main" }}
+{{ partial "header.html" . }}
+
+<main class="max-w-3xl mx-auto px-6 py-12 min-h-screen bg-background">
+    <section class="mb-12 space-y-6">
+        
+        <div class="space-y-2">
+            <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search posts by title, content, or tags..."
+                    class="w-full pl-11 pr-11 py-3 bg-background border border-border rounded-sm focus:outline-none focus:ring-2 focus:ring-ring/50 transition-shadow text-base font-normal placeholder:text-muted-foreground"
+                />
+                
+                <button
+                    id="clear-search"
+                    class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <p id="results-count" class="hidden text-sm text-muted-foreground"></p>
+        </div>
+
+        <div class="space-y-3">
+            <h3 class="text-sm text-muted-foreground font-medium">Filter by tags:</h3>
+            <div class="flex flex-wrap gap-2" id="tag-filters">
+                {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+                <button 
+                    data-tag="{{ $name }}"
+                    class="filter-tag text-sm px-3 py-1 border rounded-sm transition-colors text-muted-foreground border-border hover:border-foreground bg-transparent data-[active=true]:bg-foreground data-[active=true]:text-background data-[active=true]:border-foreground">
+                    {{ $name | humanize }}
+                </button>
+                {{ end }}
+            </div>
+            <p id="active-filters-text" class="hidden text-sm text-muted-foreground"></p>
+        </div>
+    </section>
+
+    <section class="space-y-12" id="posts-container">
+        {{ range .Pages }}
+        <article class="blog-post-item group cursor-pointer block" 
+                 onclick="window.location.href='{{ .RelPermalink }}'"
+                 data-title="{{ .Title | lower }}" 
+                 data-summary="{{ .Summary | lower }}"
+                 data-tags="{{ with .Params.tags }}{{ delimit . "," | lower }}{{ end }}">
+            
+            <div class="space-y-3">
+                <h2 class="text-2xl font-medium group-hover:text-muted-foreground transition-colors">
+                    {{ .Title }}
+                </h2>
+
+                <div class="flex items-center gap-3 text-sm text-muted-foreground">
+                    <time datetime="{{ .Date }}">{{ .Date.Format "2 January, 2006" }}</time>
+                    {{/*  <span>·</span>
+                    <span>{{ .ReadingTime }} min read</span>  */}}
+                </div>
+                
+                <p class="text-muted-foreground leading-relaxed">
+                    {{ .Summary }}
+                </p>
+                
+                <div class="flex flex-wrap gap-2 pt-2">
+                    {{ range .Params.tags }}
+                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm hover:border-foreground transition-colors">
+                        {{ . }}
+                    </span>
+                    {{ end }}
+                </div>
+            </div>
+        </article>
+        {{ end }}
+        
+        <div id="no-results" class="hidden text-center py-12">
+            <p class="text-muted-foreground">
+                No posts found matching your search criteria.
+            </p>
+        </div>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-border">
+        <p class="text-muted-foreground text-sm text-center">
+            © {{ now.Year }} {{ .Site.Params.copyrightname}}. All rights reserved.
+        </p>
+    </footer>
+</main>
+
+<script src="{{ "js/search.js" | relURL }}"></script>
+{{ end }}

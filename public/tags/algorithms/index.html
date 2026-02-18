@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+  
+  
+    
+      <link rel="stylesheet" href="/css/main.css">
+    
+  
+
+  
+  
+  <link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/algorithms/index.xml" title="vdlstudio" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},  // Display math (blocco)
+            {left: '$', right: '$', display: false},   // Inline math (singolo dollaro)
+            {left: '\\(', right: '\\)', display: false}, // Inline standard LaTeX
+            {left: '\\[', right: '\\]', display: true}   // Display standard LaTeX
+        ],
+        throwOnError : false
+    });"></script>
+  
+  
+</head>
+<body>
+  <header>
+    
+    
+  </header>
+  <main>
+    
+<header class="border-b border-border">
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <nav class="flex items-center justify-between">
+      <a href="/" class="text-foreground hover:text-muted-foreground transition-colors">
+        <h2 class="text-xl font-medium">vdlstudio</h2>
+      </a>
+      
+      <div class="flex gap-8 text-base font-medium">
+        
+          <a href="/about" class="text-muted-foreground hover:text-foreground transition-colors">
+            About
+          </a>
+          
+            <a href="http://localhost:1313/tags/algorithms/index.xml" class="text-muted-foreground hover:text-foreground transition-colors" title="Subscribe via RSS">
+              RSS
+            </a>
+          
+        
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-6 py-12 min-h-screen bg-background">
+    <section class="mb-12 space-y-6">
+        
+        <div class="space-y-2">
+            <div class="relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search posts by title, content, or tags..."
+                    class="w-full pl-11 pr-11 py-3 bg-background border border-border rounded-sm focus:outline-none focus:ring-2 focus:ring-ring/50 transition-shadow text-base font-normal placeholder:text-muted-foreground"
+                />
+                
+                <button
+                    id="clear-search"
+                    class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <p id="results-count" class="hidden text-sm text-muted-foreground"></p>
+        </div>
+
+        <div class="space-y-3">
+            <h3 class="text-sm text-muted-foreground font-medium">Filter by tags:</h3>
+            <div class="flex flex-wrap gap-2" id="tag-filters">
+                
+                <button 
+                    data-tag="algorithms"
+                    class="filter-tag text-sm px-3 py-1 border rounded-sm transition-colors text-muted-foreground border-border hover:border-foreground bg-transparent data-[active=true]:bg-foreground data-[active=true]:text-background data-[active=true]:border-foreground">
+                    Algorithms
+                </button>
+                
+                <button 
+                    data-tag="ethics"
+                    class="filter-tag text-sm px-3 py-1 border rounded-sm transition-colors text-muted-foreground border-border hover:border-foreground bg-transparent data-[active=true]:bg-foreground data-[active=true]:text-background data-[active=true]:border-foreground">
+                    Ethics
+                </button>
+                
+                <button 
+                    data-tag="society"
+                    class="filter-tag text-sm px-3 py-1 border rounded-sm transition-colors text-muted-foreground border-border hover:border-foreground bg-transparent data-[active=true]:bg-foreground data-[active=true]:text-background data-[active=true]:border-foreground">
+                    Society
+                </button>
+                
+            </div>
+            <p id="active-filters-text" class="hidden text-sm text-muted-foreground"></p>
+        </div>
+    </section>
+
+    <section class="space-y-12" id="posts-container">
+        
+        <article class="blog-post-item group cursor-pointer block" 
+                 onclick="window.location.href='\/blog\/primo\/'"
+                 data-title="primo" 
+                 data-summary="critical perspectives on fairness, accountability, and transparency in automated systems affecting social outcomes."
+                 data-tags="ethics,algorithms,society">
+            
+            <div class="space-y-3">
+                <h2 class="text-2xl font-medium group-hover:text-muted-foreground transition-colors">
+                    Primo
+                </h2>
+
+                <div class="flex items-center gap-3 text-sm text-muted-foreground">
+                    <time datetime="2026-02-13 01:04:32 &#43;0100 CET">13 February, 2026</time>
+                    
+                </div>
+                
+                <p class="text-muted-foreground leading-relaxed">
+                    Critical perspectives on fairness, accountability, and transparency in automated systems affecting social outcomes.
+                </p>
+                
+                <div class="flex flex-wrap gap-2 pt-2">
+                    
+                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm hover:border-foreground transition-colors">
+                        Ethics
+                    </span>
+                    
+                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm hover:border-foreground transition-colors">
+                        Algorithms
+                    </span>
+                    
+                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm hover:border-foreground transition-colors">
+                        Society
+                    </span>
+                    
+                </div>
+            </div>
+        </article>
+        
+        
+        <div id="no-results" class="hidden text-center py-12">
+            <p class="text-muted-foreground">
+                No posts found matching your search criteria.
+            </p>
+        </div>
+    </section>
+
+    <footer class="mt-20 pt-8 border-t border-border">
+        <p class="text-muted-foreground text-sm text-center">
+            © 2026 Vittorio De Lucia. All rights reserved.
+        </p>
+    </footer>
+</main>
+
+<script src="/js/search.js"></script>
+
+  </main>
+  
+</body>
+</html>

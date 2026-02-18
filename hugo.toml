@@ -1,0 +1,53 @@
+baseURL = 'https://localhost:1313/'
+languageCode = 'en-us'
+title = 'vdlstudio'
+copyright = '© 2026 Vittorio De Lucia'
+
+[params]
+  description = "ciao mamma"
+  email = "victor03[at]gmail.com"
+  copyrightname = "Vittorio De Lucia"
+  math = "true"
+  [params.author]
+    email = 'victor03[at]gmail.com'
+    name = 'Vittorio De Lucia'
+
+[build]
+  [build.buildStats]
+    enable = true
+  [[build.cachebusters]]
+    source = 'assets/notwatching/hugo_stats\.json'
+    target = 'css'
+  [[build.cachebusters]]
+    source = '(postcss|tailwind)\.config\.js'
+    target = 'css'
+[module]
+  [[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+  [[module.mounts]]
+    disableWatch = true
+    source = 'hugo_stats.json'
+    target = 'assets/notwatching/hugo_stats.json'
+
+[outputs]
+  # Assicura che RSS sia generato per la Home e le sezioni
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  # page = ["HTML", "RSS"]
+  # taxonomy = ["HTML", "RSS"]
+  # term = ["HTML", "RSS"]
+
+[services.rss]
+  limit = 20  # Numero di post nel feed (default è spesso 10 o 15)
+
+[markup]
+  [markup.goldmark]
+    # [markup.goldmark.renderer]
+    #   unsafe= true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['\[', '\]'], ['$$', '$$']]
+          inline = [['\(', '\)'], ['$', '$']]
