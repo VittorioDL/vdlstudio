@@ -2,7 +2,6 @@
 @source "hugo_stats.json";
 
 /* --- 1. CONFIGURAZIONE TEMA (Variabili CSS) --- */
-/* Copiato e adattato dal tuo file theme.css */
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -30,7 +29,6 @@
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
   
-  /* Sidebar variables from your theme */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: #030213;
@@ -72,7 +70,6 @@
 }
 
 /* --- 2. MAPPING TEMA TAILWIND v4 --- */
-/* Collega le variabili CSS alle classi di utilità (es. bg-background) */
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -101,7 +98,6 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Animazioni Custom (per la Landing Page) */
   --animate-fade-in: fadeIn 1s ease-out forwards;
   
   @keyframes fadeIn {
@@ -110,7 +106,7 @@
   }
 }
 
-/* --- 3. STILI BASE --- */
+/* --- 3. STILI BASE E TIPOGRAFIA --- */
 @layer base {
   * {
     border-color: var(--border);
@@ -123,13 +119,90 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Tipografia Base */
-  html {
-    font-size: var(--font-size);
-  }
+  html { font-size: var(--font-size); }
 
   h1 { font-size: 2.5rem; font-weight: 500; line-height: 1.2; margin-bottom: 1rem; }
   h2 { font-size: 2rem; font-weight: 500; line-height: 1.3; margin-bottom: 0.75rem; }
   h3 { font-size: 1.75rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
+  h4 { font-size: 1.25rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
+  h5 { font-size: 1.125rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
+  h6 { font-size: 1rem; font-weight: 500; line-height: 1.4; margin-bottom: 0.5rem; }
   p { margin-bottom: 1rem; line-height: 1.6; }
+
+  /* --- LINK MARKDOWN --- */
+  article p a, article li a, article table a {
+    color: var(--foreground);
+    text-decoration: underline;
+    text-decoration-color: var(--border);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+    cursor: pointer;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  }
+
+  article p a:hover, article li a:hover, article table a:hover {
+    color: var(--muted-foreground);
+    text-decoration-color: var(--muted-foreground);
+  }
+
+  /* --- LISTE MARKDOWN --- */
+  article ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  article ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+  article li { margin-bottom: 0.5rem; line-height: 1.6; }
+  article li ul { list-style-type: circle; margin-top: 0.5rem; margin-bottom: 0; }
+  article li ol { margin-top: 0.5rem; margin-bottom: 0; }
+
+  /* --- CITAZIONI (Blockquote) --- */
+  article blockquote {
+    border-left: 4px solid var(--border);
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+    color: var(--muted-foreground);
+    font-style: italic;
+  }
+
+  /* --- CODICE E TABELLE --- */
+  article :not(pre) > code {
+    background-color: var(--muted);
+    color: var(--foreground);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  article table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  article th, article td { border: 1px solid var(--border); padding: 0.75rem 1rem; text-align: left; }
+  article th { background-color: var(--muted); font-weight: 500; }
+
+  /* --- IMMAGINI E CAPTION --- */
+  article figure { margin: 2rem 0; text-align: center; }
+  article figure img { border-radius: var(--radius-sm); border: 1px solid var(--border); max-width: 100%; height: auto; margin: 0 auto; }
+  article figcaption { margin-top: 0.75rem; font-size: 0.875rem; color: var(--muted-foreground); font-style: italic; }
+
+  /* --- TOGGLE (DETAILS/SUMMARY) --- */
+  article details {
+    margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--border);
+    border-radius: var(--radius-md); background-color: var(--background);
+  }
+  article summary { font-weight: 500; cursor: pointer; color: var(--foreground); outline: none; }
+  article summary::marker { color: var(--muted-foreground); }
+  article details[open] summary { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
 }
+
+/* --- NOTE A PIÈ DI PAGINA (Footnotes) - Fuori dal layer per sicurezza --- */
+.footnotes {
+  margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  font-size: 0.875rem; color: var(--muted-foreground);
+}
+.footnotes hr { display: none; }
+.footnotes ol { padding-left: 1.2rem; }
+.footnotes li { margin-bottom: 0.75rem; }
+.footnotes li p { margin: 0; }
+.footnote-ref { text-decoration: none; color: var(--foreground); font-weight: 500; padding-left: 0.1rem; }
+.footnote-backref {
+  text-decoration: none; color: var(--muted-foreground); margin-left: 0.3rem;
+  font-family: sans-serif; transition: color 0.2s ease;
+}
+.footnote-backref:hover { color: var(--foreground); }

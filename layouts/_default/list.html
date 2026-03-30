@@ -31,16 +31,23 @@
 
         <div class="space-y-3">
             <h3 class="text-sm text-muted-foreground font-medium">Filter by tags:</h3>
-            <div class="flex flex-wrap gap-2" id="tag-filters">
+            <div class="flex flex-wrap gap-2">
+                
+                {{ $currentTag := lower $.Title }}
+                
                 {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
-                <button 
-                    data-tag="{{ $name }}"
-                    class="filter-tag text-sm px-3 py-1 border rounded-sm transition-colors text-muted-foreground border-border hover:border-foreground bg-transparent data-[active=true]:bg-foreground data-[active=true]:text-background data-[active=true]:border-foreground">
-                    {{ $name | humanize }}
-                </button>
+                
+                    {{ $isActive := eq $currentTag (lower $name) }}
+                    
+                    <a href="{{ if $isActive }}/blog/{{ else }}{{ "/tags/" | relLangURL }}{{ $name | urlize }}/{{ end }}" 
+                    class="text-sm px-3 py-1 border rounded-sm transition-colors hover:border-foreground
+                        {{ if $isActive }} bg-foreground text-background border-foreground {{ else }} bg-transparent text-muted-foreground border-border {{ end }}">
+                        {{ $name | humanize }}
+                    </a>
+                    
                 {{ end }}
+                
             </div>
-            <p id="active-filters-text" class="hidden text-sm text-muted-foreground"></p>
         </div>
     </section>
 
@@ -69,7 +76,7 @@
                 
                 <div class="flex flex-wrap gap-2 pt-2">
                     {{ range .Params.tags }}
-                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm hover:border-foreground transition-colors">
+                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm">
                         {{ . }}
                     </span>
                     {{ end }}
@@ -92,5 +99,5 @@
     </footer>
 </main>
 
-<script src="{{ "js/search.js" | relURL }}"></script>
+<script src="{{ "/js/search.js" | relURL }}"></script>
 {{ end }}

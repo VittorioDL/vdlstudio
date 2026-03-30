@@ -43,8 +43,8 @@ copyright = '© 2026 Vittorio De Lucia'
 
 [markup]
   [markup.goldmark]
-    # [markup.goldmark.renderer]
-    #   unsafe= true
+    [markup.goldmark.renderer]
+      unsafe= true
     [markup.goldmark.extensions]
       [markup.goldmark.extensions.passthrough]
         enable = true
