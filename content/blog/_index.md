@@ -1,5 +1,4 @@
 +++
-title = "Articoli"
+quote = "L'atteggiamento scientifico e quello poetico coincidono"
+author = "Italo Calvino"
 +++
-
-Citazione carina per la lista dei post

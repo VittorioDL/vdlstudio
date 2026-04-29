@@ -8,6 +8,19 @@
 <main class="max-w-3xl mx-auto px-6 py-12 min-h-screen bg-background">
     <section class="mb-12 space-y-6">
         
+        {{ with .Params.quote}}
+        <div class="py-1">
+            <p class="text-xl italic font-medium text-foreground">
+                "{{ . }}"
+            </p>
+            {{ with $.Params.author }}
+            <p class="text-sm text-muted-foreground font-medium">
+                — {{ . }}
+            </p>
+            {{ end }}
+        </div>
+        {{ end }}
+
         <div class="space-y-2">
             <div class="relative">
                 <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -15,7 +28,7 @@
                 <input
                     type="text"
                     id="search-input"
-                    placeholder="Search posts by title, content, or tags..."
+                    placeholder="Search posts by title, content, or tags"
                     class="w-full pl-11 pr-11 py-3 bg-background border border-border rounded-sm focus:outline-none focus:ring-2 focus:ring-ring/50 transition-shadow text-base font-normal placeholder:text-muted-foreground"
                 />
                 
