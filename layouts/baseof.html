@@ -15,9 +15,8 @@
     }
   </script>
   
-  {{ with (templates.Defer (dict "key" "global")) }}
-    {{ partial "css.html" . }}
-  {{ end }}
+  {{ partial "css.html" . }}
+  
   <!-- RSS. Only ever link to /feed.xml. Render home, section, and pages. -->
   {{/*  {{- with .OutputFormats.Get "rss" -}}
       {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type $.Site.RSSLink $.Site.Title | safeHTML }}
