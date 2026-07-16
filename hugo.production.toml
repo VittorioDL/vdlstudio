@@ -1,4 +1,4 @@
-baseURL = 'https://VittorioDL.github.io/vdlstudio/'
+baseURL = 'https://vittoriodl.github.io/vdlstudio/'
 locale = 'en-us'
 title = 'vdlstudio'
 copyright = '© 2026 Vittorio De Lucia'
