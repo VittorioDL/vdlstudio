@@ -34,9 +34,11 @@ jobs:
         with:
           node-version: '22'
 
-      # 2. Installa Tailwind CSS CLI (fondamentale per Hugo in produzione)
-      - name: Install Tailwind CSS CLI
-        run: npm install -g @tailwindcss/cli
+      # 2. Installa Tailwind CSS sia localmente che globalmente (evita l'errore "Can't resolve")
+      - name: Install Tailwind CSS
+        run: |
+          npm init -y
+          npm install tailwindcss @tailwindcss/cli
 
       # 3. Installa l'ultima versione Extended di Hugo
       - name: Setup Hugo
