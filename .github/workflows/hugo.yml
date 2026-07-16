@@ -3,7 +3,7 @@ name: Deploy Hugo site to Pages
 on:
   push:
     branches:
-      - main # Cambia in 'master' se la tua branch principale si chiama così
+      - main
 
 permissions:
   contents: read
@@ -21,24 +21,40 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.125.0 # Sostituisci con la tua versione di Hugo (scrivi 'hugo version' nel terminale per vederla)
     steps:
-      - name: Install Hugo CLI
-        run: |
-          wget -O ${{ runner.temp }}/hugo.deb https://github.com/gohugoio/hugo/releases/download/v${{ env.HUGO_VERSION }}/hugo_extended_${{ env.HUGO_VERSION }}/hugo_extended_${{ env.HUGO_VERSION }}_linux-amd64.deb
-          sudo dpkg -i ${{ runner.temp }}/hugo.deb          
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
+      # 1. Configura Node.js (fondamentale per Tailwind CSS v4)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 2. Installa Tailwind (se hai un package.json lo installa da lì, altrimenti globalmente)
+      - name: Install Tailwind CSS
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            npm install -g tailwindcss postcss autoprefixer
+          fi
+
+      # 3. Installa l'ultima versione Extended di Hugo (necessaria per Tailwind e Sass)
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 'latest' # Usa l'ultima versione per evitare conflitti di compatibilità
+          extended: true
+
       - name: Setup Pages
         id: pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
+      # 4. Avvia la compilazione in produzione
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
@@ -47,7 +63,8 @@ jobs:
           hugo \
             --gc \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"          
+            --environment production \
+            --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
