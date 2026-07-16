@@ -52,7 +52,7 @@
                 
                     {{ $isActive := eq $currentTag (lower $name) }}
                     
-                    <a href="{{ if $isActive }}{{ "/blog/" | relURL }}{{ else }}{{ printf "/tags/%s/" ($name | urlize) | relURL }}{{ end }}" 
+                    <a href="{{ if $isActive }}{{ "blog/" | relURL }}{{ else }}{{ printf "/tags/%s/" ($name | urlize) | relURL }}{{ end }}" 
                         class="text-sm px-3 py-1 border rounded-sm transition-colors hover:border-foreground
                         {{ if $isActive }} bg-foreground text-background border-foreground {{ else }} bg-transparent text-muted-foreground border-border {{ end }}">
                         {{ $name | humanize }}
@@ -112,5 +112,5 @@
     </footer>
 </main>
 
-<script src="{{ "/js/search.js" | relURL }}"></script>
+<script src="{{ "js/search.js" | relURL }}"></script>
 {{ end }}
