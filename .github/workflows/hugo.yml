@@ -28,33 +28,24 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      # 1. Configura Node.js (fondamentale per Tailwind CSS v4)
+      # 1. Forza Node.js alla versione 22 per evitare il bug "--permission"
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      # 2. Installa Tailwind (se hai un package.json lo installa da lì, altrimenti globalmente)
-      - name: Install Tailwind CSS
-        run: |
-          if [ -f package.json ]; then
-            npm install
-          else
-            npm install -g tailwindcss postcss autoprefixer
-          fi
-
-      # 3. Installa l'ultima versione Extended di Hugo (necessaria per Tailwind e Sass)
+      # 2. Installa l'ultima versione Extended di Hugo
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest' # Usa l'ultima versione per evitare conflitti di compatibilità
+          hugo-version: 'latest'
           extended: true
 
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
-      # 4. Avvia la compilazione in produzione
+      # 3. Avvia la compilazione
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
