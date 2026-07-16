@@ -1,4 +1,4 @@
-baseURL = 'http://localhost:1313/'
+baseURL = 'https://VittorioDL.github.io/vdlstudio/'
 languageCode = 'en-us'
 title = 'vdlstudio'
 copyright = '© 2026 Vittorio De Lucia'

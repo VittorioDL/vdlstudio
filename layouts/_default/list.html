@@ -52,8 +52,8 @@
                 
                     {{ $isActive := eq $currentTag (lower $name) }}
                     
-                    <a href="{{ if $isActive }}/blog/{{ else }}{{ "/tags/" | relLangURL }}{{ $name | urlize }}/{{ end }}" 
-                    class="text-sm px-3 py-1 border rounded-sm transition-colors hover:border-foreground
+                    <a href="{{ if $isActive }}{{ "/blog/" | relURL }}{{ else }}{{ printf "/tags/%s/" ($name | urlize) | relURL }}{{ end }}" 
+                        class="text-sm px-3 py-1 border rounded-sm transition-colors hover:border-foreground
                         {{ if $isActive }} bg-foreground text-background border-foreground {{ else }} bg-transparent text-muted-foreground border-border {{ end }}">
                         {{ $name | humanize }}
                     </a>
@@ -67,7 +67,7 @@
     <section class="space-y-12" id="posts-container">
         {{ range .Pages }}
         <article class="blog-post-item group cursor-pointer block transition-transform duration-300 hover:translate-x-2" 
-                 onclick="window.location.href='{{ .RelPermalink }}'"
+                 onclick="window.location.href='{{ .Permalink }}'"
                  data-title="{{ .Title | lower }}" 
                  data-summary="{{ .Summary | lower }}"
                  data-tags="{{ with .Params.tags }}{{ delimit . "," | lower }}{{ end }}">

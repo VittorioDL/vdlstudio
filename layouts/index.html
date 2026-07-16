@@ -12,12 +12,12 @@
                 {{ .Site.Title }}
             </h1>
             
-            <a href="/blog" 
+            <a href="{{ "/blog/" | relURL }}"
                class="text-foreground hover:text-muted-foreground hover:underline underline-offset-4 decoration-2 transition-all">
                 Blog
             </a>
 
-            <a href="/about" 
+            <a href="{{ "/about/" | relURL }}" 
                class="text-foreground hover:text-muted-foreground hover:underline underline-offset-4 decoration-2 transition-all">
                 About
             </a>
@@ -31,5 +31,5 @@
     </div>
 </div>
 
-<script src="/js/landing-grid.js"></script>
+<script src="{{ "/js/landing-grid.js" | relURL }}"></script>
 {{ end }}

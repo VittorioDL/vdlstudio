@@ -2,17 +2,17 @@
   <div class="max-w-3xl mx-auto px-6 py-8">
     <nav class="flex items-center justify-between">
 
-      <a href="/" class="text-foreground hover:text-muted-foreground transition-colors">
+      <a href="{{ "/" | relURL }}" class="text-foreground hover:text-muted-foreground transition-colors">
         <span class="text-xl font-medium">{{ .Site.Title }}</span>
       </a>
       
       <div class="flex items-center gap-8 text-base font-medium">
         {{ if or (eq .Layout "about") .IsPage }}
-          <a href="/blog" class="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="{{ "/blog/" | relURL }}" class="text-muted-foreground hover:text-foreground transition-colors">
             Blog
           </a>
         {{ else }}
-          <a href="/about" class="text-muted-foreground hover:text-foreground transition-colors">
+          <a href="{{ "/about/" | relURL }}" class="text-muted-foreground hover:text-foreground transition-colors">
             About
           </a>
         {{ end }}
