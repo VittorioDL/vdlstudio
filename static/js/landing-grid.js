@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+function initCanvas() {
     const canvas = document.getElementById('landing-canvas');
     if (!canvas) return;
 
@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // --- TRIGGER DELL'ONDA (Click o Tap) ---
     window.addEventListener('mousedown', (e) => {
-        // Aggiunge un nuovo ripple alle coordinate del click
         ripples.push({ x: e.clientX, y: e.clientY, radius: 0, strength: 50 });
     });
     window.addEventListener('touchstart', (e) => {
@@ -72,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = ripples.length - 1; i >= 0; i--) {
             ripples[i].radius += 1.6; // Velocità dell'onda
             ripples[i].strength *= 0.985; // L'onda perde forza man mano che si allarga
-            // Se l'onda è troppo debole, rimuovila dalla memoria
             if (ripples[i].strength < 0.5) ripples.splice(i, 1);
         }
 
@@ -105,13 +103,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     const dyRipple = point.originY - ripple.y;
                     const distRipple = Math.sqrt(dxRipple * dxRipple + dyRipple * dyRipple);
 
-                    // Calcola quanto il punto è distante dal fronte dell'onda
                     const distanceToWave = Math.abs(distRipple - ripple.radius);
                     const waveWidth = 100; // Spessore del "bordo" dell'onda
 
                     if (distanceToWave < waveWidth && distRipple > 0) {
-                        const pulse = 1 - (distanceToWave / waveWidth); // 1 al centro dell'onda, 0 ai margini
-                        // Funzione coseno per far ondeggiare il punto avanti e indietro
+                        const pulse = 1 - (distanceToWave / waveWidth);
                         const push = Math.cos((distRipple - ripple.radius) * 0.1) * pulse * ripple.strength;
 
                         moveX += (dxRipple / distRipple) * push;
@@ -122,8 +118,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 const targetX = point.originX + moveX;
                 const targetY = point.originY + moveY;
 
-                // Ritorno elastico più veloce (0.15 invece di 0.08) per far stabilizzare prima la griglia
-                elastic_return = 0.09;
+                const elastic_return = 0.09;
                 point.x += (targetX - point.x) * elastic_return;
                 point.y += (targetY - point.y) * elastic_return;
 
@@ -143,4 +138,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     
     render();
-});
+}
+
+// Avvio sicuro: se il DOM è pronto esegue subito, altrimenti attende il caricamento
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCanvas);
+} else {
+    initCanvas();
+}

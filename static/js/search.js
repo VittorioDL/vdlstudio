@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+function initSearch() {
     const searchInput = document.getElementById('search-input');
     const clearButton = document.getElementById('clear-search');
     const posts = document.querySelectorAll('.blog-post-item');
@@ -55,4 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
             searchInput.focus(); // Riporta il cursore nella barra
         });
     }
-});
+}
+
+// Avvio sicuro: se il DOM è pronto esegue subito, altrimenti attende il caricamento
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSearch);
+} else {
+    initSearch();
+}
