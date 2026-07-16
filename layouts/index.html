@@ -5,7 +5,8 @@
             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.6;">
     </canvas>
 
-    <div class="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center pointer-events-auto">
+    <!-- Aggiunta la classe "landing-no-select" per bloccare la selezione di tutti i testi interni -->
+    <div class="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center pointer-events-auto landing-no-select">
         
         <div class="flex flex-col items-start text-xl font-medium">
             <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-foreground mb-4">
@@ -22,8 +23,9 @@
                 About
             </a>
 
+            <!-- Aggiunta la classe "selectable-email" per sovrascrivere il blocco e permettere solo qui la selezione -->
             <a href="mailto:{{ .Site.Params.email }}" 
-               class="mt-2 text-foreground hover:text-muted-foreground transition-colors font-mono text-base">
+               class="mt-2 text-foreground hover:text-muted-foreground transition-colors font-mono text-base selectable-email">
                 {{ .Site.Params.email }}
             </a>
 

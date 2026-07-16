@@ -359,3 +359,23 @@
   font-family: sans-serif; transition: color 0.2s ease;
 }
 .footnote-backref:hover { color: var(--heading); }
+
+/* --- 4. GESTIONE SELEZIONE TESTO (LANDING PAGE) --- */
+
+/* Disabilita completamente la selezione del testo all'interno della landing page */
+.landing-no-select {
+  -webkit-user-select: none;  /* Safari/iOS */
+  -moz-user-select: none;     /* Firefox */
+  -ms-user-select: none;      /* IE/Edge */
+  user-select: none;          /* Standard */
+}
+
+/* Rende l'email (e solo l'email) selezionabile e copiabile */
+/* Rende l'email selezionabile e ripristina il cursore a manina dei link */
+.selectable-email {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+  cursor: pointer !important; /* Ripristina il cursore a manina */
+}
