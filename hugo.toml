@@ -47,7 +47,7 @@ copyright = '© 2026 Vittorio De Lucia'
     guessSyntax = true
     lineNos = false
     style = "monokailight"   
-    noClasses = true
+    noClasses = false
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe= true

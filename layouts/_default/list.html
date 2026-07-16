@@ -66,34 +66,34 @@
 
     <section class="space-y-12" id="posts-container">
         {{ range .Pages }}
-        <article class="blog-post-item group cursor-pointer block" 
+        <article class="blog-post-item group cursor-pointer block transition-transform duration-300 hover:translate-x-2" 
                  onclick="window.location.href='{{ .RelPermalink }}'"
                  data-title="{{ .Title | lower }}" 
                  data-summary="{{ .Summary | lower }}"
                  data-tags="{{ with .Params.tags }}{{ delimit . "," | lower }}{{ end }}">
             
             <div class="space-y-3">
-                <h2 class="text-2xl font-medium group-hover:text-muted-foreground transition-colors">
+                <h2 class="text-2xl font-medium text-foreground tracking-tight group-hover:underline underline-offset-4 decoration-2 decoration-muted-foreground/40">
                     {{ .Title }}
                 </h2>
 
-                <div class="flex items-center gap-3 text-sm text-muted-foreground">
+                <div class="flex flex-wrap items-center gap-4 text-sm text-muted-foreground font-mono">
                     <time datetime="{{ .Date }}">{{ .Date.Format "2 January, 2006" }}</time>
-                    {{/*  <span>·</span>
-                    <span>{{ .ReadingTime }} min read</span>  */}}
-                </div>
-                
-                <p class="text-muted-foreground leading-relaxed">
-                    {{ .Summary }}
-                </p>
-                
-                <div class="flex flex-wrap gap-2 pt-2">
-                    {{ range .Params.tags }}
-                    <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm">
-                        {{ . }}
-                    </span>
+                    
+                    {{ if .Params.tags }}
+                    <div class="flex flex-wrap items-center gap-2">
+                        {{ range .Params.tags }}
+                        <span class="text-xs px-2 py-0.5 border border-border rounded-sm transition-colors group-hover:border-foreground/30">
+                            {{ . }}
+                        </span>
+                        {{ end }}
+                    </div>
                     {{ end }}
                 </div>
+                
+                <p class="text-muted-foreground leading-relaxed mt-2">
+                    {{ .Summary }}
+                </p>
             </div>
         </article>
         {{ end }}
@@ -106,9 +106,9 @@
     </section>
 
     <footer class="mt-20 pt-8 border-t border-border">
-        <p class="text-muted-foreground text-sm text-center">
-            © {{ now.Year }} {{ .Site.Params.copyrightname}}. All rights reserved.
-        </p>
+        <div class="flex justify-center items-center text-sm text-muted-foreground font-mono">
+            <p>© {{ now.Year }} {{ .Site.Params.copyrightname }} <3</p> 
+        </div>
     </footer>
 </main>
 

@@ -2,37 +2,103 @@
 {{ partial "header.html" . }}
 
 <main class="max-w-3xl mx-auto px-6 py-12">
-    {{/*  {{ partial "backtoallposts_top.html" . }}  */}}
+    <article class="w-full">
+        
+        <header class="mb-12 pb-8 border-b border-border">
+            
+            <!-- CONTENITORE FLEX -->
+            <div class="flex justify-between items-start gap-4 sm:gap-8 mb-6">
+                
+                <div class="flex-1">
+                    <!-- Aggiunto mt-0 per annullare il margin-top globale di main.css -->
+                    <h1 class="text-4xl md:text-5xl font-bold mt-0 mb-4 text-foreground tracking-tight">
+                        {{ .Title }}
+                    </h1>
+                    
+                    {{ with .Summary }}
+                    <h3 class="text-xl font-bold mt-0 mb-6 text-foreground">
+                        {{ . }}
+                    </h3>
+                    {{ end }}
+                </div>
 
-    <article class="prose prose-neutral max-w-none prose-headings:font-bold prose-h1:text-4xl prose-h1:mb-6 prose-p:text-muted-foreground prose-p:leading-relaxed">
-        <header class="mb-12 pb-8 border-b border-border not-prose">
-            <h1 class="text-5xl font-bold mb-6 text-foreground">
-                {{ .Title }}
-            </h1>
-            <h3 class="text-xl font-bold mb-6 text-foreground">
-                {{ .Summary }}
-            </h3>
-            <div class="flex items-center gap-3 text-sm text-muted-foreground mb-4">
-                <time>{{ .Date.Format "January 2, 2006" }}</time>
-                <span>·</span>
-                <span>{{ .ReadingTime }} min read</span>
+                <!-- Toggle Minimalista Sole/Luna -->
+                <!-- mt-2 serve ad allineare il centro dell'icona con il centro visivo delle lettere maiuscole del titolo -->
+                <button id="theme-toggle" 
+                        class="shrink-0 mt-2 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" 
+                        aria-label="Toggle Dark Mode">
+                    
+                    <!-- Icona SOLE -->
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                         viewBox="0 0 24 24" 
+                         fill="none" 
+                         stroke="currentColor" 
+                         stroke-width="1.5" 
+                         stroke-linecap="round" 
+                         stroke-linejoin="round" 
+                         class="w-6 h-6 block dark:hidden">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="M4.93 4.93l1.41 1.41" />
+                        <path d="M17.66 17.66l1.41 1.41" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="M6.34 17.66l-1.41 1.41" />
+                        <path d="M19.07 4.93l-1.41 1.41" />
+                    </svg>
+
+                    <!-- Icona LUNA -->
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                         viewBox="0 0 24 24" 
+                         fill="none" 
+                         stroke="currentColor" 
+                         stroke-width="1.5" 
+                         stroke-linecap="round" 
+                         stroke-linejoin="round" 
+                         class="w-6 h-6 hidden dark:block">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                    </svg>
+                </button>
             </div>
             
+            <div class="flex items-center gap-3 text-sm text-muted-foreground mb-4">
+                <time>{{ .Date.Format "January 2, 2006" }}</time>
+                
+                {{ if ne .Params.showReadingTime false }}
+                <span>·</span>
+                <span>{{ .ReadingTime }} min read</span>
+                {{ end }}
+            </div>
             
             <div class="flex flex-wrap gap-2">
                 {{ range .Params.tags }}
-                <span class="text-sm text-muted-foreground px-3 py-1 border border-border rounded-sm">
+                <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="text-xs text-muted-foreground px-2 py-1 border border-border rounded-sm hover:border-foreground hover:text-foreground transition-colors">
                     {{ . }}
-                </span>
+                </a>
                 {{ end }}
             </div>
         </header>
 
-        <div class="mt-6 text-foreground">
+        <div class="mt-8 text-foreground leading-relaxed">
             {{ .Content }}
         </div>
     </article>
     
     {{ partial "backtoallposts_bottom.html" . }}
 </main>
+
+<script>
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    
+    themeToggleBtn.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
 {{ end }}

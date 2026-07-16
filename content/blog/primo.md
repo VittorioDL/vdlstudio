@@ -145,4 +145,4 @@ a^*=x-b^*
 $$
 
 
-[^1]: [1] La divergenza di Kullback-Leibler non è una vera e propria metrica di distanza perché non è simmetrica.
+[^1]: La divergenza di Kullback-Leibler non è una vera e propria metrica di distanza perché non è simmetrica.

@@ -34,6 +34,15 @@
   --radius: 0.2rem; 
   
   --code-bg: rgba(0, 0, 0, 0.04);
+
+  /* --- COLORI SINTASSI (Light Mode) --- */
+  --sh-bg: #f6f8fa;
+  --sh-text: #24292e;
+  --sh-comment: #6a737d;
+  --sh-keyword: #d73a49;
+  --sh-string: #032f62;
+  --sh-function: #6f42c1;
+  --sh-number: #005cc5;
 }
 
 .dark {
@@ -61,10 +70,22 @@
   --ring: #52525b;
   
   --code-bg: rgba(255, 255, 255, 0.1);
+
+  /* --- COLORI SINTASSI (Dark Mode) --- */
+  --sh-bg: #0d1117;
+  --sh-text: #c9d1d9;
+  --sh-comment: #8b949e;
+  --sh-keyword: #ff7b72;
+  --sh-string: #a5d6ff;
+  --sh-function: #d2a8ff;
+  --sh-number: #79c0ff;
 }
 
 /* --- 2. MAPPING TEMA TAILWIND v4 --- */
 @theme {
+  --text-base: 1rem; /* 18px */
+  --leading-relaxed: 1.6;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -110,10 +131,11 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    /* Stack di font di sistema: ultra-veloce, neutro e accademico */
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    letter-spacing: -0.01em;
+    /* Stack tipografico aggiornato: Crimson Pro con fallback su altri font Serif classici */
+    font-family: "Crimson Pro", Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    /* letter-spacing: -0.005em; */
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -125,11 +147,12 @@
     letter-spacing: -0.02em;
   }
 
-  h1 { font-size: 2rem; line-height: 1.2; margin-top: 2rem; margin-bottom: 1.2rem; }
-  h2 { font-size: 1.5rem; line-height: 1.3; margin-top: 2.5rem; margin-bottom: 0.8rem; }
-  h3 { font-size: 1.25rem; line-height: 1.4; margin-top: 1.8rem; margin-bottom: 0.6rem; }
-  h4 { font-size: 1.125rem; line-height: 1.4; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-  p { margin-bottom: 1.5rem; }
+  /* Spaziature dei titoli ridotte per maggiore compattezza */
+  h1 { font-size: 2rem; line-height: 1.1; margin-top: 1.5rem; margin-bottom: 1rem; }
+  h2 { font-size: 1.5rem; line-height: 1.2; margin-top: 1.75rem; margin-bottom: 0.75rem; }
+  h3 { font-size: 1.25rem; line-height: 1.3; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+  h4 { font-size: 1.125rem; line-height: 1.3; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+  p { margin-bottom: 1.15rem; }
 
   /* --- LINK MARKDOWN --- */
   article p a, article li a, article table a {
@@ -159,14 +182,18 @@
   article li ol { margin-top: 0.5rem; margin-bottom: 0; }
 
   /* --- CITAZIONI (Blockquote) --- */
+
+
   article blockquote {
-    border-left: 3px solid var(--border);
-    padding-left: 1.25rem;
-    margin-left: 0;
-    margin-bottom: 1.5rem;
-    color: var(--muted-foreground);
+    border-left: 3px solid var(--primary);
+    background-color: var(--muted);
+    padding: 1rem 2rem;
+    color: var(--foreground);
     font-style: italic;
+    font-size: 1.2rem; 
+    quotes: "“" "”";
   }
+
 
   /* --- CODICE E TABELLE --- */
   article :not(pre) > code {
@@ -178,7 +205,14 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
 
-  article table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  article table { 
+    display: block;        /* Permette all'overflow di funzionare */
+    width: 100%; 
+    max-width: 100%;
+    overflow-x: auto; 
+    border-collapse: collapse; 
+    margin-bottom: 1.5rem; 
+  }
   article th, article td { border: 1px solid var(--border); padding: 0.75rem 1rem; text-align: left; }
   article th { background-color: var(--code-bg); font-weight: 600; color: var(--heading); }
 
@@ -189,12 +223,125 @@
 
   /* --- TOGGLE (DETAILS/SUMMARY) --- */
   article details {
-    margin: 1.5rem 0; padding: 1rem; border: 1px solid var(--border);
-    border-radius: var(--radius-md); background-color: var(--background);
+    margin: 2rem 0;
   }
-  article summary { font-weight: 600; cursor: pointer; color: var(--heading); outline: none; }
-  article summary::marker { color: var(--muted-foreground); }
-  article details[open] summary { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  
+  article summary {
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--foreground);
+    outline: none;
+    transition: color 0.2s ease;
+    
+    /* 1. Togliamo il triangolino di default */
+    list-style: none;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  
+  /* Nasconde il marker nativo per i browser basati su WebKit (Chrome, Safari) */
+  article summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  /* 2. Creiamo il nostro triangolo custom e lo fissiamo a 0.2rem da sinistra */
+  article summary::before {
+    content: "▶";
+    font-size: 0.7em;
+    position: absolute;
+    left: 0.2rem; 
+    top: 0.35rem; /* Centra visivamente il triangolo rispetto all'altezza del testo */
+    color: var(--muted-foreground);
+    transition: transform 0.2s ease;
+  }
+  
+  article summary:hover {
+    color: var(--muted-foreground);
+  }
+  
+  article summary:hover::before {
+    color: var(--foreground);
+  }
+  
+  /* Ruota il triangolo quando si clicca */
+  article details[open] summary::before {
+    transform: rotate(90deg);
+  }
+  
+  /* 3. Disegniamo la linea ESATTAMENTE al centro del triangolo (a 0.4rem) */
+  article details[open] {
+    padding-left: 1.5rem;
+    /* Un gradiente ci permette di disegnare una linea di 2px nel punto preciso che vogliamo noi */
+    background: linear-gradient(to right,
+      transparent 0.4rem,
+      var(--border) 0.4rem,
+      var(--border) calc(0.4rem + 2px),
+      transparent calc(0.4rem + 2px)
+    );
+    display: flow-root;
+  }
+  
+  /* 4. Il titolo rientra indietro e con il suo sfondo copre invisibilmente la cima della barretta */
+  article details[open] summary {
+    margin-left: -1.5rem;
+    padding-left: 1.5rem;
+    background-color: var(--background); 
+    margin-bottom: 1rem;
+    color: var(--heading);
+  }
+
+  /* --- FIX RESPONSIVE: CODICE --- */
+  article pre {
+    max-width: 100%;       /* Impedisce di sforare il contenitore */
+    overflow-x: auto;      /* Abilita lo scroll orizzontale se necessario */
+    padding: 1rem;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  /* Ottimizzazione del testo dell'articolo */
+  .mt-8 > p {
+    margin-bottom: 1.15rem;
+    font-size: 1.05rem; /* Un buon compromesso tra leggibilità e compattezza */
+    line-height: 1.55; 
+  }
+
+  /* Gestione dello scroll per le formule matematiche lunghe */
+  /* Se una formula è più larga dello schermo su mobile, permettiamo lo scroll orizzontale */
+  .katex-display {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+  }
+
+  /* --- HIGHLIGHT SINTASSI (Chroma) --- */
+  /* Contenitore principale del blocco di codice */
+  .highlight {
+    margin: 2rem 0;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background-color: var(--sh-bg);
+    overflow: hidden;
+  }
+
+  .chroma {
+    color: var(--sh-text);
+    padding: 1.25rem;
+    overflow-x: auto;
+    font-size: 0.9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  
+  /* Mappatura delle classi generate da Hugo ai nostri colori */
+  .chroma .c, .chroma .c1, .chroma .cm { color: var(--sh-comment); font-style: italic; } /* Commenti */
+  .chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: var(--sh-keyword); font-weight: 600; } /* Keyword */
+  .chroma .s, .chroma .s1, .chroma .s2, .chroma .sb { color: var(--sh-string); } /* Stringhe */
+  .chroma .nf, .chroma .nc, .chroma .nx { color: var(--sh-function); } /* Funzioni e Classi */
+  .chroma .m, .chroma .mi, .chroma .mf, .chroma .mh { color: var(--sh-number); } /* Numeri */
+  .chroma .o, .chroma .ow, .chroma .p { color: var(--sh-text); } /* Operatori e Punteggiatura */
 }
 
 /* --- NOTE A PIÈ DI PAGINA --- */

@@ -92,12 +92,18 @@ $$ i\hbar \frac{\partial}{\partial t} \Psi(\mathbf{r},t) = \hat{H} \Psi(\mathbf{
 Questo è puro HTML inserito nel Markdown. Usa il cursore del mouse per espandere.
 
 <details>
-  <summary><strong>Spiegazione Dettagliata (Clicca qui)</strong></summary>
+  <summary>Spiegazione Dettagliata (Clicca qui)</summary>
   
   Questo testo era nascosto! È un ottimo modo per inserire dimostrazioni matematiche chilometriche o grossi blocchi di codice che altrimenti intaserebbero la lettura dell'articolo.
-  
   Puoi persino metterci un'immagine dentro:
   ![Esempio immagine web](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&q=80)
+
+  **Matematica Inline:** La probabilità condizionata $P(A|B) = \frac{P(B|A)P(A)}{P(B)}$ è alla base del teorema di Bayes[^1].
+
+  **Matematica a Blocco (Display Mode):**
+  L'equazione di Schrödinger dipendente dal tempo:
+  $$ i\hbar \frac{\partial}{\partial t} \Psi(\mathbf{r},t) = \hat{H} \Psi(\mathbf{r},t) $$
+
 </details>
 
 ---
