@@ -28,13 +28,17 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
-      # 1. Forza Node.js alla versione 22 per evitare il bug "--permission"
+      # 1. Configura Node.js (versione 22)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      # 2. Installa l'ultima versione Extended di Hugo
+      # 2. Installa Tailwind CSS CLI (fondamentale per Hugo in produzione)
+      - name: Install Tailwind CSS CLI
+        run: npm install -g @tailwindcss/cli
+
+      # 3. Installa l'ultima versione Extended di Hugo
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
@@ -45,7 +49,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      # 3. Avvia la compilazione
+      # 4. Avvia la compilazione
       - name: Build with Hugo
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
