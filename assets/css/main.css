@@ -131,11 +131,9 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    /* Stack tipografico aggiornato: Crimson Pro con fallback su altri font Serif classici */
     font-family: "Crimson Pro", Georgia, Cambria, "Times New Roman", Times, serif;
     font-size: var(--text-base);
     line-height: var(--leading-relaxed);
-    /* letter-spacing: -0.005em; */
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
@@ -147,7 +145,6 @@
     letter-spacing: -0.02em;
   }
 
-  /* Spaziature dei titoli ridotte per maggiore compattezza */
   h1 { font-size: 2rem; line-height: 1.1; margin-top: 1.5rem; margin-bottom: 1rem; }
   h2 { font-size: 1.5rem; line-height: 1.2; margin-top: 1.75rem; margin-bottom: 0.75rem; }
   h3 { font-size: 1.25rem; line-height: 1.3; margin-top: 1.5rem; margin-bottom: 0.5rem; }
@@ -182,8 +179,6 @@
   article li ol { margin-top: 0.5rem; margin-bottom: 0; }
 
   /* --- CITAZIONI (Blockquote) --- */
-
-
   article blockquote {
     border-left: 3px solid var(--primary);
     background-color: var(--muted);
@@ -193,7 +188,6 @@
     font-size: 1.2rem; 
     quotes: "“" "”";
   }
-
 
   /* --- CODICE E TABELLE --- */
   article :not(pre) > code {
@@ -206,7 +200,7 @@
   }
 
   article table { 
-    display: block;        /* Permette all'overflow di funzionare */
+    display: block;        
     width: 100%; 
     max-width: 100%;
     overflow-x: auto; 
@@ -232,25 +226,21 @@
     color: var(--foreground);
     outline: none;
     transition: color 0.2s ease;
-    
-    /* 1. Togliamo il triangolino di default */
     list-style: none;
     position: relative;
     padding-left: 1.5rem;
   }
   
-  /* Nasconde il marker nativo per i browser basati su WebKit (Chrome, Safari) */
   article summary::-webkit-details-marker {
     display: none;
   }
   
-  /* 2. Creiamo il nostro triangolo custom e lo fissiamo a 0.2rem da sinistra */
   article summary::before {
     content: "▶";
     font-size: 0.7em;
     position: absolute;
     left: 0.2rem; 
-    top: 0.35rem; /* Centra visivamente il triangolo rispetto all'altezza del testo */
+    top: 0.35rem; 
     color: var(--muted-foreground);
     transition: transform 0.2s ease;
   }
@@ -263,15 +253,12 @@
     color: var(--foreground);
   }
   
-  /* Ruota il triangolo quando si clicca */
   article details[open] summary::before {
     transform: rotate(90deg);
   }
   
-  /* 3. Disegniamo la linea ESATTAMENTE al centro del triangolo (a 0.4rem) */
   article details[open] {
     padding-left: 1.5rem;
-    /* Un gradiente ci permette di disegnare una linea di 2px nel punto preciso che vogliamo noi */
     background: linear-gradient(to right,
       transparent 0.4rem,
       var(--border) 0.4rem,
@@ -281,7 +268,6 @@
     display: flow-root;
   }
   
-  /* 4. Il titolo rientra indietro e con il suo sfondo copre invisibilmente la cima della barretta */
   article details[open] summary {
     margin-left: -1.5rem;
     padding-left: 1.5rem;
@@ -292,23 +278,20 @@
 
   /* --- FIX RESPONSIVE: CODICE --- */
   article pre {
-    max-width: 100%;       /* Impedisce di sforare il contenitore */
-    overflow-x: auto;      /* Abilita lo scroll orizzontale se necessario */
+    max-width: 100%;       
+    overflow-x: auto;      
     padding: 1rem;
     background-color: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
   }
 
-  /* Ottimizzazione del testo dell'articolo */
   .mt-8 > p {
     margin-bottom: 1.15rem;
-    font-size: 1.05rem; /* Un buon compromesso tra leggibilità e compattezza */
+    font-size: 1.05rem; 
     line-height: 1.55; 
   }
 
-  /* Gestione dello scroll per le formule matematiche lunghe */
-  /* Se una formula è più larga dello schermo su mobile, permettiamo lo scroll orizzontale */
   .katex-display {
     max-width: 100%;
     overflow-x: auto;
@@ -318,7 +301,6 @@
   }
 
   /* --- HIGHLIGHT SINTASSI (Chroma) --- */
-  /* Contenitore principale del blocco di codice */
   .highlight {
     margin: 2rem 0;
     border-radius: var(--radius-md);
@@ -335,13 +317,12 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   }
   
-  /* Mappatura delle classi generate da Hugo ai nostri colori */
-  .chroma .c, .chroma .c1, .chroma .cm { color: var(--sh-comment); font-style: italic; } /* Commenti */
-  .chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: var(--sh-keyword); font-weight: 600; } /* Keyword */
-  .chroma .s, .chroma .s1, .chroma .s2, .chroma .sb { color: var(--sh-string); } /* Stringhe */
-  .chroma .nf, .chroma .nc, .chroma .nx { color: var(--sh-function); } /* Funzioni e Classi */
-  .chroma .m, .chroma .mi, .chroma .mf, .chroma .mh { color: var(--sh-number); } /* Numeri */
-  .chroma .o, .chroma .ow, .chroma .p { color: var(--sh-text); } /* Operatori e Punteggiatura */
+  .chroma .c, .chroma .c1, .chroma .cm { color: var(--sh-comment); font-style: italic; } 
+  .chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr { color: var(--sh-keyword); font-weight: 600; } 
+  .chroma .s, .chroma .s1, .chroma .s2, .chroma .sb { color: var(--sh-string); } 
+  .chroma .nf, .chroma .nc, .chroma .nx { color: var(--sh-function); } 
+  .chroma .m, .chroma .mi, .chroma .mf, .chroma .mh { color: var(--sh-number); } 
+  .chroma .o, .chroma .ow, .chroma .p { color: var(--sh-text); } 
 }
 
 /* --- NOTE A PIÈ DI PAGINA --- */
@@ -362,20 +343,23 @@
 
 /* --- 4. GESTIONE SELEZIONE TESTO (LANDING PAGE) --- */
 
-/* Disabilita completamente la selezione del testo all'interno della landing page */
-.landing-no-select {
+/* Impedisce la selezione visiva accidentale del titolo o delle sezioni menu */
+h1, 
+a[href*="blog"], 
+a[href*="about"] {
   -webkit-user-select: none;  /* Safari/iOS */
   -moz-user-select: none;     /* Firefox */
   -ms-user-select: none;      /* IE/Edge */
   user-select: none;          /* Standard */
 }
 
-/* Rende l'email (e solo l'email) selezionabile e copiabile */
-/* Rende l'email selezionabile e ripristina il cursore a manina dei link */
+/* Rende l'email selezionabile con comportamento nativo (Long Press su mobile) 
+   ripristinando la classica manina da PC */
 .selectable-email {
-  -webkit-user-select: text !important;
-  -moz-user-select: text !important;
-  -ms-user-select: text !important;
-  user-select: text !important;
-  cursor: pointer !important; /* Ripristina il cursore a manina */
+  -webkit-user-select: text;  
+  -moz-user-select: text;     
+  -ms-user-select: text;      
+  user-select: text;          
+  cursor: pointer; 
+  -webkit-tap-highlight-color: transparent; /* Elimina il flash azzurro al tocco rapido */
 }
