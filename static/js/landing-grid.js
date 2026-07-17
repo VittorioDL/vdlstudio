@@ -4,24 +4,45 @@ function initCanvas() {
 
     const ctx = canvas.getContext('2d');
     let points = [];
-    let spacing = 45; 
+    let spacing = 35; // Valore base più compatto per una griglia fitta
     let cols = 0, rows = 0;
     let mousePos = { x: -1000, y: -1000 };
     let ripples = []; 
 
+    // Parametri dinamici adattati allo schermo
+    let dynamicWaveWidth = 260; // Dimensione dell'onda
+    let dynamicWaveForce = 0.6;  // Spinta dell'onda
+
     // Previene onde doppie o sovrapposte ravvicinate (anti-rimbalzo)
     let lastRippleTime = 0;
     const rippleCooldown = 350; 
+
+    // Variabile per calcolare il tempo trascorso tra i frame (Delta Time)
+    let lastFrameTime = performance.now();
 
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         points = [];
         
-        // Lo spacing si adatta alla densità dei pixel del dispositivo.
-        // Mantiene la stessa proporzione fisica visiva su PC, tablet e telefoni.
-        const dpr = window.devicePixelRatio || 1;
-        spacing = Math.max(45, 30 * dpr); 
+        const width = window.innerWidth;
+
+        // 1. DENSITÀ DINAMICA DELLA GRIGLIA
+        // Se lo schermo è piccolo (mobile), usiamo uno spacing molto fitto (30-35px).
+        // Se lo schermo è grande, lo allarghiamo leggermente (fino a 45px) per non appesantire la GPU.
+        if (width < 768) {
+            spacing = 30; // Griglia fittissima e bellissima su mobile
+            dynamicWaveWidth = 130; // L'onda su mobile è dimezzata per rimanere proporzionata
+            dynamicWaveForce = 0.45; // Forza leggermente ridotta per evitare distorsioni su griglia fitta
+        } else if (width < 1200) {
+            spacing = 38;
+            dynamicWaveWidth = 190;
+            dynamicWaveForce = 0.55;
+        } else {
+            spacing = 45; // Griglia standard per PC desktop
+            dynamicWaveWidth = 260; // Onda grande e cinematica su schermi enormi
+            dynamicWaveForce = 0.6;
+        }
         
         cols = Math.ceil(canvas.width / spacing) + 2;
         rows = Math.ceil(canvas.height / spacing) + 2;
@@ -46,7 +67,7 @@ function initCanvas() {
         ripples.push({ x, y, radius: 0, strength: 50 });
     }
 
-    // --- FUNZIONE DI RESET DELLA POSIZIONE (Annulla attrazione gravitazionale) ---
+    // --- FUNZIONE DI RESET DELLA POSIZIONE ---
     function resetCursor() {
         mousePos = { x: -1000, y: -1000 };
     }
@@ -58,7 +79,7 @@ function initCanvas() {
     });
     
     window.addEventListener('mouseleave', resetCursor);
-    window.addEventListener('mouseup', resetCursor); // Cruciale per rilasci rapidi e simulatori PC
+    window.addEventListener('mouseup', resetCursor); 
 
     window.addEventListener('mousedown', (e) => {
         mousePos.x = e.clientX;
@@ -66,7 +87,7 @@ function initCanvas() {
         triggerRipple(e.clientX, e.clientY);
     });
 
-    // --- GESTIONE INPUT TOUCH (MOBILE E SIMULATORE DEVELOPER TOOL) ---
+    // --- GESTIONE INPUT TOUCH (MOBILE) ---
     window.addEventListener('touchstart', (e) => {
         if (e.touches.length > 0) {
             const touch = e.touches[0];
@@ -88,22 +109,29 @@ function initCanvas() {
 
     resize();
 
-    function render() {
+    // Loop di rendering
+    function render(currentTime) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Delta Time (dt) tarato sui 60 FPS standard
+        const dt = Math.min(3, (currentTime - lastFrameTime) / 16.666);
+        lastFrameTime = currentTime;
         
         const isDark = document.documentElement.classList.contains('dark');
         ctx.strokeStyle = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.12)";
         ctx.lineWidth = 1;
         ctx.beginPath();
 
-        // 1. ESPANSIONE E DISSIPAZIONE DELLE ONDE
+        // 1. AGGIORNA LE ONDE (Velocità adattiva)
         for (let i = ripples.length - 1; i >= 0; i--) {
-            ripples[i].radius += 1.6; 
-            ripples[i].strength *= 0.99; 
+            // Su mobile l'onda viaggia leggermente più lenta per assaporarne il movimento sulla griglia fitta
+            const speedMultiplier = window.innerWidth < 768 ? 3.2 : 4.8;
+            ripples[i].radius += speedMultiplier * dt; 
+            ripples[i].strength *= Math.pow(0.985, dt); 
             if (ripples[i].strength < 0.5) ripples.splice(i, 1);
         }
 
-        const maxDist = 333; 
+        const maxDist = window.innerWidth < 768 ? 180 : 333; // Raggio attrazione cursore ridotto su mobile
 
         for (let i = 0; i < cols; i++) {
             for (let j = 0; j < rows; j++) {
@@ -126,18 +154,19 @@ function initCanvas() {
                     moveY += dyMouse * ease * pullStrength;
                 }
 
-                // 3. FISICA DELLE ONDE (Ripple sinusoidale morbido)
+                // 3. FISICA DELLE ONDE (Ripple adattivo e morbido)
                 for (const ripple of ripples) {
                     const dxRipple = point.originX - ripple.x;
                     const dyRipple = point.originY - ripple.y;
                     const distRipple = Math.sqrt(dxRipple * dxRipple + dyRipple * dyRipple);
 
                     const distanceToWave = Math.abs(distRipple - ripple.radius);
-                    const waveWidth = 260; 
 
-                    if (distanceToWave < waveWidth && distRipple > 0) {
-                        const pulse = 1 - (distanceToWave / waveWidth);
-                        const push = Math.sin((distRipple - ripple.radius) * 0.04) * pulse * (ripple.strength * 0.5);
+                    if (distanceToWave < dynamicWaveWidth && distRipple > 0) {
+                        const pulse = 1 - (distanceToWave / dynamicWaveWidth);
+                        // Curva sinusoidale proporzionata alla larghezza dell'onda impostata nel resize()
+                        const waveScale = 7 / dynamicWaveWidth; 
+                        const push = Math.sin((distRipple - ripple.radius) * waveScale) * pulse * (ripple.strength * dynamicWaveForce);
 
                         moveX += (dxRipple / distRipple) * push;
                         moveY += (dyRipple / distRipple) * push;
@@ -147,12 +176,12 @@ function initCanvas() {
                 const targetX = point.originX + moveX;
                 const targetY = point.originY + moveY;
 
-                // Ritorno elastico progressivo
-                const elastic_return = 0.06;
-                point.x += (targetX - point.x) * elastic_return;
-                point.y += (targetY - point.y) * elastic_return;
+                // Ritorno elastico fluido
+                const elastic_return = 0.1 * dt;
+                point.x += (targetX - point.x) * Math.min(1, elastic_return);
+                point.y += (targetY - point.y) * Math.min(1, elastic_return);
 
-                // Disegno delle linee della griglia
+                // Disegna la griglia
                 if (i < cols - 1) {
                     const right = points[(i + 1) * rows + j];
                     if (right) { ctx.moveTo(point.x, point.y); ctx.lineTo(right.x, right.y); }
@@ -167,7 +196,10 @@ function initCanvas() {
         requestAnimationFrame(render);
     }
     
-    render();
+    requestAnimationFrame((timestamp) => {
+        lastFrameTime = timestamp;
+        render(timestamp);
+    });
 }
 
 if (document.readyState === "loading") {
