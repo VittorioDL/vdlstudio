@@ -341,25 +341,23 @@
 }
 .footnote-backref:hover { color: var(--heading); }
 
-/* --- 4. GESTIONE SELEZIONE TESTO (LANDING PAGE) --- */
+/* --- OTTIMIZZAZIONE INTERAZIONE MOBILE NATIVA --- */
 
-/* Impedisce la selezione visiva accidentale del titolo o delle sezioni menu */
-h1, 
-a[href*="blog"], 
-a[href*="about"] {
-  -webkit-user-select: none;  /* Safari/iOS */
-  -moz-user-select: none;     /* Firefox */
-  -ms-user-select: none;      /* IE/Edge */
-  user-select: none;          /* Standard */
+/* 1. Elimina il flash azzurro/grigio su TUTTO il sito al tocco rapido */
+* {
+  -webkit-tap-highlight-color: transparent !important;
 }
 
-/* Rende l'email selezionabile con comportamento nativo (Long Press su mobile) 
-   ripristinando la classica manina da PC */
-.selectable-email {
-  -webkit-user-select: text;  
-  -moz-user-select: text;     
-  -ms-user-select: text;      
-  user-select: text;          
-  cursor: pointer; 
-  -webkit-tap-highlight-color: transparent; /* Elimina il flash azzurro al tocco rapido */
+/* 2. Disabilita la selezione SOLO per gli elementi UI (bottoni, menu, icone)
+      I tocchi qui non faranno mai partire la selezione. */
+button, nav, #theme-toggle, .landing-no-select h1, .landing-no-select a:not(.selectable-email) {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
 }
+
+/* Nota: Per i testi veri (paragrafi, titoli degli articoli, l'email) 
+   NON inseriremo alcuna regola. Il telefono applicherà il suo comportamento 
+   nativo di default: ignorare i tap veloci e selezionare solo con il Long Press. */
