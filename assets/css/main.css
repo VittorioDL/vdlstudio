@@ -358,6 +358,10 @@ button, nav, #theme-toggle, .landing-no-select h1, .landing-no-select a:not(.sel
   -webkit-touch-callout: none !important;
 }
 
-/* Nota: Per i testi veri (paragrafi, titoli degli articoli, l'email) 
-   NON inseriremo alcuna regola. Il telefono applicherà il suo comportamento 
-   nativo di default: ignorare i tap veloci e selezionare solo con il Long Press. */
+/* 3. RISOLUZIONE SELEZIONE AL TOCCO NEGLI ARTICOLI
+   Disabilita il doppio tap per lo zoom sui blocchi di testo.
+   Questo impedisce al browser mobile di scambiare un tocco singolo
+   per l'inizio di una selezione del testo o di uno zoom. */
+article p, article h1, article h2, article h3, article h4, article h5, article h6, article li {
+    touch-action: manipulation;
+}
